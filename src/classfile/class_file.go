@@ -67,9 +67,9 @@ func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
 }
 func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	self.minorVersion = reader.readUint16()
-	fmt.Println(self.minorVersion)
+	//fmt.Println(self.minorVersion)
 	self.majorVersion = reader.readUint16()
-	fmt.Println(self.majorVersion)
+	//fmt.Println(self.majorVersion)
 	switch self.majorVersion {
 	case 45:
 		return

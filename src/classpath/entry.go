@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-const pathListSeparator = string(os.PathSeparator)
+const pathListSeparator = string(os.PathListSeparator)
 
 //
 //  Entry
