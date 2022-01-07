@@ -2,29 +2,25 @@ package main
 
 import (
 	"fmt"
-	"jvm/src/classfile"
 	"jvm/src/instructions"
 	"jvm/src/instructions/base"
 	"jvm/src/rtda"
+	"jvm/src/rtda/heap"
 )
 
-func interpert(methodInfo *classfile.MemberInfo) {
-	codeAttr := methodInfo.CodeAttribute()
-	maxLocals := codeAttr.MaxLocals()
-	maxStack := codeAttr.MaxStack()
-	bytecode := codeAttr.Code()
+func interpert(method *heap.Method) {
 	thread := rtda.NewThread()
-	frame := thread.NewFrame(maxLocals, maxStack)
+	frame := thread.NewFrame(method)
 	thread.PushFrame(frame)
 	defer catchErr(frame)
-	loop(thread, bytecode)
+	loop(thread, method.Code())
 }
 
 func catchErr(frame *rtda.Frame) {
 	if r := recover(); r != nil {
-		fmt.Printf("LocalVars:%v\n", frame.LocalVars())
-		fmt.Printf("OperandStack:%v\n", frame.OperandStack())
-		panic(r)
+		//fmt.Printf("LocalVars:%v\n", frame.LocalVars())
+		//fmt.Printf("OperandStack:%v\n", frame.OperandStack())
+		//panic(r)
 	}
 }
 func loop(thread *rtda.Thread, bytecode []byte) {

@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"jvm/src/classfile"
 	"jvm/src/classpath"
+	"jvm/src/rtda/heap"
 	"strings"
 )
 
@@ -25,49 +25,14 @@ func main() {
 //
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
+	classLoader := heap.NewClassLoader(cp)
 	//fmt.Printf("classpath:%v class:%v args:%v\n", cp, cmd.class, cmd.args)
 	className := strings.Replace(cmd.class, ".", "/", -1)
-	cf := loadClass(className, cp)
-	mainMethod := getMainMethod(cf)
+	mainClass := classLoader.LoadClass(className)
+	mainMethod := mainClass.GetMainMethod()
 	if mainMethod != nil {
 		interpert(mainMethod)
 	} else {
 		fmt.Printf("Main method not found in class %s\n", cmd.class)
-	}
-	//printClassInfo(cf)
-}
-func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
-	classDate, _, err := cp.ReadClass(className)
-	if err != nil {
-		panic(err)
-	}
-	cf, err := classfile.Parse(classDate)
-	if err != nil {
-		panic(err)
-	}
-	return cf
-}
-func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo {
-	for _, m := range cf.Methods() {
-		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/String;)V" {
-			return m
-		}
-	}
-	return nil
-}
-func printClassInfo(cf *classfile.ClassFile) {
-	fmt.Printf("version: %v.%v\n", cf.MajorVersion(), cf.MinorVersion())
-	fmt.Printf("constants count: %v\n", len(cf.ConstantPool()))
-	fmt.Printf("access flags: 0x%x\n", cf.AccessFlags())
-	fmt.Printf("this class: %v\n", cf.ClassName())
-	fmt.Printf("super class: %v\n", cf.SuperClassName())
-	fmt.Printf("interfaces: %v\n", cf.InterfaceNames())
-	fmt.Printf("fields count: %v\n", len(cf.Fields()))
-	for _, f := range cf.Fields() {
-		fmt.Printf("    %s\n", f.Name())
-	}
-	fmt.Printf("methods count: %v\n", len(cf.Methods()))
-	for _, m := range cf.Methods() {
-		fmt.Printf("    %s\n", m.Name())
 	}
 }
