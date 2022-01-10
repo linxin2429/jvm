@@ -16,7 +16,6 @@ func (self *NEW) Execute(frame *rtda.Frame) {
 	class := classRef.ResolvedClass()
 	if !class.InitStarted() {
 		frame.RevertNextPC()
-
 	}
 	if class.IsInterface() || class.IsAbstract() {
 		panic("java.lang.InstantiationError")
