@@ -4,6 +4,7 @@ import (
 	"jvm/src/instructions/base"
 	"jvm/src/native"
 	_ "jvm/src/native/java/lang"
+	_ "jvm/src/native/sun/misc"
 	"jvm/src/rtda"
 )
 
