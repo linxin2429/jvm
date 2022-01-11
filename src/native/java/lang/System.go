@@ -6,8 +6,10 @@ import (
 	"jvm/src/rtda/heap"
 )
 
+const jlSystem = "java/lang/System"
+
 func init() {
-	native.Register("java/lang/System", "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy)
+	native.Register(jlSystem, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy)
 }
 
 func arraycopy(frame *rtda.Frame) {
