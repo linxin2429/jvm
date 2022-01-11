@@ -1,6 +1,8 @@
 package native
 
-import "jvm/src/rtda"
+import (
+	"jvm/src/rtda"
+)
 
 type NativeMethod func(frame *rtda.Frame)
 

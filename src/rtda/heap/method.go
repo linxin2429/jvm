@@ -1,6 +1,8 @@
 package heap
 
-import "jvm/src/classfile"
+import (
+	"jvm/src/classfile"
+)
 
 type Method struct {
 	ClassMember
