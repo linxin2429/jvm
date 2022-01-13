@@ -3,8 +3,13 @@ package reserved
 import (
 	"jvm/src/instructions/base"
 	"jvm/src/native"
+	_ "jvm/src/native/java/io"
 	_ "jvm/src/native/java/lang"
+	_ "jvm/src/native/java/security"
+	_ "jvm/src/native/java/util/concurrent/atomic"
+	_ "jvm/src/native/sun/io"
 	_ "jvm/src/native/sun/misc"
+	_ "jvm/src/native/sun/reflect"
 	"jvm/src/rtda"
 )
 

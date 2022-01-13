@@ -1,8 +1,10 @@
 package base
 
 import (
+	"fmt"
 	"jvm/src/rtda"
 	"jvm/src/rtda/heap"
+	"strings"
 )
 
 func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
@@ -16,4 +18,10 @@ func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
 			newFrame.LocalVars().SetSlot(uint(i), slot)
 		}
 	}
+}
+func _logInvoke(stackSize uint, method *heap.Method) {
+	space := strings.Repeat(" ", int(stackSize))
+	className := method.Class().Name()
+	methodName := method.Name()
+	fmt.Printf("[method]%v %v.%v()\n", space, className, methodName)
 }

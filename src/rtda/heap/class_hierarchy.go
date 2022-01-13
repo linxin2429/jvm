@@ -2,6 +2,10 @@ package heap
 
 // jvms8 6.5.instanceof
 // jvms8 6.5.checkcast
+
+func (self *Class) IsAssignableFrom(other *Class) bool {
+	return self.isAssignableFrom(other)
+}
 func (self *Class) isAssignableFrom(other *Class) bool {
 	s, t := other, self
 
