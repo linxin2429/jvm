@@ -43,7 +43,6 @@ func loop(thread *rtda.Thread, logInst bool) {
 		if logInst {
 			logInstruction(frame, inst)
 		}
-
 		// execute
 		inst.Execute(frame)
 		if thread.IsStackEmpty() {

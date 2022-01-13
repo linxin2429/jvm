@@ -7,6 +7,10 @@ type Thread struct {
 	stack *Stack
 }
 
+func (self *Thread) ClearStack() {
+	self.stack.clear()
+}
+
 func NewThread() *Thread {
 	return &Thread{stack: newStack(1024)}
 }
@@ -36,4 +40,8 @@ func (self *Thread) IsStackEmpty() bool {
 }
 func (self *Thread) NewFrame(method *heap.Method) *Frame {
 	return newFrame(self, method)
+}
+
+func (self *Thread) GetFrames() []*Frame {
+	return self.stack.getFrames()
 }

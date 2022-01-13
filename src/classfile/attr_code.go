@@ -48,6 +48,15 @@ func (self *CodeAttribute) Code() []byte {
 func (self *CodeAttribute) ExceptionTable() []*ExceptionTableEntry {
 	return self.exceptionTable
 }
+func (self *CodeAttribute) LineNumberTableAttribute() *LineNumberTableAttribute {
+	for _, attrInfo := range self.attributes {
+		switch attrInfo.(type) {
+		case *LineNumberTableAttribute:
+			return attrInfo.(*LineNumberTableAttribute)
+		}
+	}
+	return nil
+}
 
 type ExceptionTableEntry struct {
 	startPc   uint16

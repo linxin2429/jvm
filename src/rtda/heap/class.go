@@ -21,6 +21,7 @@ type Class struct {
 	staticVars        Slots
 	initStarted       bool
 	jClass            *Object
+	sourceFile        string
 }
 
 func newClass(cf *classfile.ClassFile) *Class {
@@ -32,8 +33,17 @@ func newClass(cf *classfile.ClassFile) *Class {
 	class.constantPool = newConstantPool(class, cf.ConstantPool())
 	class.fields = newFields(class, cf.Fields())
 	class.methods = newMethods(class, cf.Methods())
+	class.sourceFile = getSourceFile(cf)
 	return class
 }
+
+func getSourceFile(cf *classfile.ClassFile) string {
+	if sfAttr := cf.SourceFileAttribute(); sfAttr != nil {
+		return sfAttr.FileName()
+	}
+	return "Unknown" // todo
+}
+
 func (self *Class) IsPublic() bool {
 	return 0 != self.accessFlags&ACC_PUBLIC
 }
@@ -93,6 +103,10 @@ func (self *Class) JClass() *Object {
 	return self.jClass
 }
 
+func (self *Class) SourceFile() string {
+	return self.sourceFile
+}
+
 // jvms 5.4.4
 func (self *Class) isAccessibleTo(other *Class) bool {
 	return self.IsPublic() ||
@@ -141,7 +155,9 @@ func (self *Class) ArrayClass() *Class {
 func (self *Class) getField(name, descriptor string, isStatic bool) *Field {
 	for c := self; c != nil; c = c.superClass {
 		for _, field := range c.fields {
-			if field.IsStatic() == isStatic && field.name == name && field.descriptor == descriptor {
+			if field.IsStatic() == isStatic &&
+				field.name == name &&
+				field.descriptor == descriptor {
 				return field
 			}
 		}
